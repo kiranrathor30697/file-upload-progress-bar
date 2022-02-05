@@ -33,7 +33,7 @@ export default function UploadFile() {
 
     let FileUpload = async (e) =>{
         e.preventDefault();
-        console.log('okokokokokok')
+        //console.log('okokokokokok')
 
 
         let data = new FormData();

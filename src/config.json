@@ -1,4 +1,4 @@
 {
-    "dev_api_url":"http:localhost:1337",
+    "dev_api_url":"http://localhost:1337",
     "prod_api_url":"https://safe-wildwood-83604.herokuapp.com"
 }
