@@ -14,6 +14,7 @@ export default function Login() {
             password:""
         });
         const [user,setUser] = useState({
+            disable:false,
             user:null,
             is_loggedin:true
         });
@@ -121,7 +122,7 @@ export default function Login() {
                                         <label htmlFor="password" className="form-label">Password</label>
                                         <input type="password" name="password" onChange={(e)=>{hendleMyData(e)}} className="form-control k_password" id="password" />
                                     </div>
-                                    <button type="submit" className="btn btn-primary">Submit</button>
+                                    <button type="submit" className="btn btn-primary" disabled={! mydata.identifier || ! mydata.password}>Submit</button>
                                 </form>
                             </div>
                         </div>

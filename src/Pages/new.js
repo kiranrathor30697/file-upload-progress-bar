@@ -1,4 +1,5 @@
 //import area
+import { render } from '@testing-library/react';
 import axios from 'axios';
 import React, { useState } from 'react';
 //import swal from 'sweetalert';
@@ -12,10 +13,10 @@ export default function UploadFile() {
     //1.State/Hook variable
     const [file ,setFile] = useState('');
     const [mydata ,setMydata] = useState({
-        readFile :'',
         percent:0,
         loaded:false
-    }); 
+    });  
+    const [isdisable,setIsDisable] = useState(false); 
 
     //2.Function
     let logOut = (e)=>{
@@ -25,12 +26,15 @@ export default function UploadFile() {
     }
 
     let hendleData = (e)=>{
+
+        setIsDisable(true);
+
         console.log('change value',e[0]);
         setFile(e[0]);
         setMydata({
             //get previous value and place here
             ...mydata,
-            readFile :'',
+            //set new value
             percent:0,
             loaded:false
         });
@@ -46,7 +50,9 @@ export default function UploadFile() {
 
         try {
             setMydata({
-                readFile :'disabled',
+                //get previous value and place here
+                ...mydata,
+                //
                 percent:0,
                 loaded:true
             });
@@ -54,7 +60,7 @@ export default function UploadFile() {
             let response = await axios({
                 method: 'POST',
                 //url:'http://localhost:1337/api/uplload',
-                url:`${config.dev_api_url}/api/upload`,
+                url:`${config.prod_api_url}/api/upload`,
                 data,
                 onUploadProgress:(progress) =>{
                     //console.log(progress);
@@ -62,7 +68,6 @@ export default function UploadFile() {
                         //get previous value and place here
                         ...mydata,
                         //set new value
-                        readFile :'disabled',
                         loaded:true,
                         percent:Math.round(progress.loaded/progress.total*100)
                         //percent:Math.ceil(progress.loaded/progress.total*100)
@@ -112,7 +117,11 @@ export default function UploadFile() {
                     <input type="file" name="file" accept="image/*" className="form-control" id="file" onChange={(e)=>{hendleData(e.target.files)}} />
                 </div>
                 <div className="col-auto">
-                    <button type="submit" className="btn btn-primary mb-3">File upload</button>
+                    {
+                        !file &&
+                        <button type="submit" className="btn btn-primary mb-3">File upload</button>
+                    }
+                    
                 </div>
             </form>
             {
@@ -121,7 +130,7 @@ export default function UploadFile() {
                     <div className="progress-bar" id="k_progress" role="progressbar" style={{width: mydata.percent+'%'}} aria-valuenow={mydata.percent} aria-valuemin={0} aria-valuemax={100}>{mydata.percent}%</div>
                 </div>
             }
-            <button className="btn btn-success mt-3" onClick={(e)=>{logOut(e)}} >Log Out</button>
+            <button className="btn btn-success" onClick={(e)=>{logOut(e)}} disabled={isdisable}>Log Out</button>
             <ToastContainer />
           </div>
       </div>
